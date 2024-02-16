@@ -70,16 +70,19 @@
     <%sorted_date_deliveries.each do |a_delivery| %>
       <li>
         <div><%=a_delivery.description%></div>
-        <% if (a_delivery.supposed_to_arrive_on+3) < Date.today %>
+        <% if (a_delivery.supposed_to_arrive_on-3) < Date.today %>
           <div style="color:red">Supposed to arrive on <%=a_delivery.supposed_to_arrive_on%></div>
         <% else %>
           <div>Supposed to arrive on <%=a_delivery.supposed_to_arrive_on%></div>
         <% end %>
-
         <div><%=a_delivery.details%></div>
         <div>
           <form action="/modify_delivery/<%=a_delivery.id %>" method="post">
+            <input type="hidden" name="query_user_id" value=<%=current_user.id%>>
             <input type="hidden" name="arrived" value="true">
+            <input type="hidden" name="description" value="<%= a_delivery.description %>">
+            <input type="hidden" name="query_supposed_to_arrive_on" value="<%= a_delivery.supposed_to_arrive_on %>">
+            <input type="hidden" name="query_details" value="<%= a_delivery.details %>">
             <button>Mark as received</button>
           </form>
         </div>
@@ -96,7 +99,6 @@
     <%sorted_date_deliveries.each do |a_delivery| %>
       <li>
         <div><%=a_delivery.description%></div>
-
         <div>
           <small>
 
