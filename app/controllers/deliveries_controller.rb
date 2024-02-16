@@ -3,7 +3,7 @@ class DeliveriesController < ApplicationController
     if current_user!=nil
       matching_deliveries = Delivery.all
 
-      @list_of_deliveries = matching_deliveries.order({ :created_at => :desc })
+      @list_of_deliveries = matching_deliveries.order({ :supposed_to_arrive_on => :asc })
   
       render({ :template => "deliveries/index" })
     else
