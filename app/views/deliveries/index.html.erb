@@ -66,11 +66,16 @@
   <h2>Waiting on</h2>
 
   <ul>
-    <%sorted_date_deliveries=@list_of_deliveries.where({:arrived=>true})%>
+    <%sorted_date_deliveries=@list_of_deliveries.where({:arrived=>false})%>
     <%sorted_date_deliveries.each do |a_delivery| %>
       <li>
         <div><%=a_delivery.description%></div>
-        <div>Supposed to arrive on <%=a_delivery.supposed_to_arrive_on%></div>
+        <% if (a_delivery.supposed_to_arrive_on+3) < Date.today %>
+          <div style="color:red">Supposed to arrive on <%=a_delivery.supposed_to_arrive_on%></div>
+        <% else %>
+          <div>Supposed to arrive on <%=a_delivery.supposed_to_arrive_on%></div>
+        <% end %>
+
         <div><%=a_delivery.details%></div>
         <div>
           <form action="/modify_delivery/<%=a_delivery.id %>" method="post">
@@ -87,7 +92,7 @@
 <div class="received" style="background-color:lightgreen">
   <h2>Received</h2>
   <ul>
-    <%sorted_date_deliveries=@list_of_deliveries.where({:arrived=>false})%>
+    <%sorted_date_deliveries=@list_of_deliveries.where({:arrived=>true})%>
     <%sorted_date_deliveries.each do |a_delivery| %>
       <li>
         <div><%=a_delivery.description%></div>
@@ -95,7 +100,7 @@
         <div>
           <small>
 
-          Updated <!--<%=(a_delivery.updated_at-DateTime.now()).to_s%>--> minutes ago -->
+            Updated <!--<%=(a_delivery.updated_at-DateTime.now()).to_s%>--> minutes ago -->
             <a href="/delete_delivery/<%=a_delivery.id%>">Delete</a>
           </small>
         </div>
